@@ -38,19 +38,19 @@ The system operates on a coordinated pipeline of specialized agents:
     # Python 3
     python3 -m http.server 8080
     ```
-3.  Open `http://localhost:8080/orchestrator.html` in your browser.
+3.  Open `http://localhost:8080/` in your browser.
 
 ### Using Gestures
 - **Closed Fist (Hold)**: Toggle System Mute.
 - **Swipe Left/Right**: Navigation (simulated).
 
 ## File Structure
-- `orchestrator.html`: The main entry point and UI dashboard.
+- `index.html`: The main entry point and UI dashboard (formerly `orchestrator.html`).
 - `vision.html`: Standalone vision processing module.
 - `gesture_interpreter.py`: Python reference implementation for gesture logic (ported to JS for the web agent).
 - `orchestrator-agent.js`: Core logic for state management and agent coordination.
 - `vision-agent.js`: Hand tracking and landmark broadcasting logic.
-- `index.html`: Particle visualization layer.
+- `particles.html`: Particle visualization layer.
 
 ## Technologies
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript

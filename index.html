@@ -4,55 +4,429 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Particle Visualization Agent</title>
-    <meta name="description" content="Real-time 3D particle system representing gesture recognition system truth">
-    <link rel="stylesheet" href="index.css">
+    <title>AURA Orchestrator - Gesture Control System</title>
+    <meta name="description" content="AURA Orchestrator Agent - Central coordination for gesture-to-action system">
+    <link rel="stylesheet" href="orchestrator.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <canvas id="particleCanvas"></canvas>
+    <!-- Main Container -->
+    <div class="orchestrator-container">
 
-    <!-- Status Overlay -->
-    <div class="status-overlay">
-        <div class="status-header">
-            <div class="status-dot"></div>
-            <span class="status-title">PARTICLE VISUALIZER</span>
-        </div>
-        <div class="status-grid">
-            <div class="status-item">
-                <span class="status-label">Confidence</span>
-                <div class="status-bar">
-                    <div class="status-bar-fill" id="confidenceBar"></div>
+        <!-- Header -->
+        <header class="orchestrator-header">
+            <div class="header-left">
+                <div class="logo">
+                    <span class="logo-icon">🎯</span>
+                    <span class="logo-text">AURA</span>
                 </div>
-                <span class="status-value" id="confidenceValue">0%</span>
+                <span class="logo-subtitle">Orchestrator Agent</span>
             </div>
-            <div class="status-item">
-                <span class="status-label">Gesture</span>
-                <span class="status-value gesture" id="gestureValue">NONE</span>
+            <div class="header-right">
+                <div class="connection-status" id="connectionStatus">
+                    <div class="status-dot connected"></div>
+                    <span>Connected</span>
+                </div>
             </div>
-            <div class="status-item">
-                <span class="status-label">State</span>
-                <span class="status-value state" id="stateValue">IDLE</span>
-            </div>
-        </div>
-        <div class="controls-hint">
-            <span>1-5: States</span>
-            <span>0: Cooldown</span>
-            <span>Space: Execute</span>
-        </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <main class="main-grid">
+
+            <!-- Left Panel: Agent Feeds -->
+            <section class="agent-feeds">
+                <div class="panel vision-panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">👁️</span>
+                        <h3>Vision Agent</h3>
+                        <div class="panel-status" id="visionStatus">
+                            <span class="status-badge active">ACTIVE</span>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <iframe id="visionFrame" src="./vision.html" title="Vision Agent"
+                            allow="camera; microphone"></iframe>
+                    </div>
+                </div>
+
+                <div class="panel particle-panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">✨</span>
+                        <h3>Particle Visualization</h3>
+                        <div class="panel-status" id="particleStatus">
+                            <span class="status-badge active">RENDERING</span>
+                        </div>
+                    </div>
+                    <div class="panel-content">
+                        <iframe id="particleFrame" src="./particles.html" title="Particle Visualization"></iframe>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Panel: System State -->
+            <section class="system-state-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">⚡</span>
+                        <h3>System State</h3>
+                    </div>
+
+                    <!-- Status Display -->
+                    <div class="state-display">
+                        <div class="state-indicator" id="systemStatusIndicator">
+                            <div class="status-ring idle">
+                                <div class="status-core"></div>
+                            </div>
+                            <span class="status-text" id="systemStatusText">IDLE</span>
+                        </div>
+
+                        <div class="user-message" id="userMessage">
+                            <span class="message-icon">💬</span>
+                            <span class="message-text">No hand detected</span>
+                        </div>
+                    </div>
+
+                    <!-- State Details Grid -->
+                    <div class="state-grid">
+                        <div class="state-item">
+                            <label>Gesture</label>
+                            <div class="state-value gesture" id="gestureValue">NONE</div>
+                        </div>
+
+                        <div class="state-item">
+                            <label>Confidence</label>
+                            <div class="confidence-display">
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" id="confidenceFill"></div>
+                                </div>
+                                <span class="confidence-label" id="confidenceLabel">LOW</span>
+                            </div>
+                        </div>
+
+                        <div class="state-item">
+                            <label>Safety</label>
+                            <div class="state-value safety" id="safetyValue">
+                                <span class="safety-icon">🔒</span>
+                                <span>Not Approved</span>
+                            </div>
+                        </div>
+
+                        <div class="state-item">
+                            <label>Action State</label>
+                            <div class="state-value action" id="actionStateValue">NONE</div>
+                        </div>
+                    </div>
+
+                    <!-- Action Feedback -->
+                    <div class="action-feedback" id="actionFeedback">
+                        <div class="feedback-content hidden" id="feedbackContent">
+                            <div class="feedback-icon">✓</div>
+                            <div class="feedback-text">Action Executed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipeline Flow Diagram -->
+                <div class="panel pipeline-panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">🔄</span>
+                        <h3>Decision Pipeline</h3>
+                    </div>
+                    <div class="pipeline-flow">
+                        <div class="pipeline-stage" id="stageVision">
+                            <div class="stage-icon">👁️</div>
+                            <div class="stage-label">Vision</div>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage" id="stageGesture">
+                            <div class="stage-icon">✋</div>
+                            <div class="stage-label">Gesture</div>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage" id="stageSafety">
+                            <div class="stage-icon">🛡️</div>
+                            <div class="stage-label">Safety</div>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage" id="stageAction">
+                            <div class="stage-icon">⚡</div>
+                            <div class="stage-label">Action</div>
+                        </div>
+                        <div class="pipeline-arrow">→</div>
+                        <div class="pipeline-stage" id="stageVisual">
+                            <div class="stage-icon">✨</div>
+                            <div class="stage-label">Visual</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Logs & Controls -->
+            <section class="controls-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">🎮</span>
+                        <h3>Test Controls</h3>
+                    </div>
+                    <div class="controls-grid">
+                        <button class="control-btn" data-state="1">
+                            <span class="btn-key">1</span>
+                            <span class="btn-label">IDLE</span>
+                        </button>
+                        <button class="control-btn" data-state="2">
+                            <span class="btn-key">2</span>
+                            <span class="btn-label">LOW</span>
+                        </button>
+                        <button class="control-btn" data-state="3">
+                            <span class="btn-key">3</span>
+                            <span class="btn-label">MEDIUM</span>
+                        </button>
+                        <button class="control-btn" data-state="4">
+                            <span class="btn-key">4</span>
+                            <span class="btn-label">HIGH</span>
+                        </button>
+                        <button class="control-btn" data-state="5">
+                            <span class="btn-key">5</span>
+                            <span class="btn-label">READY</span>
+                        </button>
+                        <button class="control-btn execute" data-state="6">
+                            <span class="btn-key">⏎</span>
+                            <span class="btn-label">EXECUTE</span>
+                        </button>
+                        <button class="control-btn cooldown" data-state="0">
+                            <span class="btn-key">0</span>
+                            <span class="btn-label">COOLDOWN</span>
+                        </button>
+                        <button class="control-btn error" data-state="9">
+                            <span class="btn-key">E</span>
+                            <span class="btn-label">ERROR</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Event Log -->
+                <div class="panel log-panel">
+                    <div class="panel-header">
+                        <span class="panel-icon">📜</span>
+                        <h3>Event Log</h3>
+                        <button class="clear-log-btn" id="clearLogBtn">Clear</button>
+                    </div>
+                    <div class="log-container" id="logContainer">
+                        <div class="log-entry info">
+                            <span class="log-time">--:--:--</span>
+                            <span class="log-msg">Orchestrator initialized</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mute State Display -->
+                <div class="panel mute-panel" id="mutePanel">
+                    <div class="mute-indicator" id="muteIndicator">
+                        <div class="mute-icon">🔊</div>
+                        <div class="mute-label">UNMUTED</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="orchestrator-footer">
+            <span>AURA Gesture-to-Action System v1.0</span>
+            <span class="separator">•</span>
+            <span>Press keys 1-5 for states, 0 for cooldown, Enter to execute</span>
+        </footer>
     </div>
 
-    <!-- Performance Monitor -->
-    <div class="fps-counter" id="fpsCounter">60 FPS</div>
+    <script src="orchestrator-agent.js"></script>
+    <script>
+        // Initialize Orchestrator
+        let orchestrator = null;
 
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
-        }
-    }
+        document.addEventListener('DOMContentLoaded', () => {
+            orchestrator = new OrchestratorAgent();
+            window.orchestrator = orchestrator;
+
+            // DOM Elements
+            const systemStatusIndicator = document.getElementById('systemStatusIndicator');
+            const systemStatusText = document.getElementById('systemStatusText');
+            const userMessage = document.querySelector('#userMessage .message-text');
+            const gestureValue = document.getElementById('gestureValue');
+            const confidenceFill = document.getElementById('confidenceFill');
+            const confidenceLabel = document.getElementById('confidenceLabel');
+            const safetyValue = document.getElementById('safetyValue');
+            const actionStateValue = document.getElementById('actionStateValue');
+            const feedbackContent = document.getElementById('feedbackContent');
+            const logContainer = document.getElementById('logContainer');
+            const muteIndicator = document.getElementById('muteIndicator');
+
+            // Pipeline stages
+            const stages = {
+                vision: document.getElementById('stageVision'),
+                gesture: document.getElementById('stageGesture'),
+                safety: document.getElementById('stageSafety'),
+                action: document.getElementById('stageAction'),
+                visual: document.getElementById('stageVisual')
+            };
+
+            // Log function
+            function addLog(message, type = 'info') {
+                const now = new Date();
+                const time = now.toTimeString().split(' ')[0];
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${type}`;
+                entry.innerHTML = `<span class="log-time">${time}</span><span class="log-msg">${message}</span>`;
+                logContainer.appendChild(entry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+
+                // Keep only last 50 entries
+                while (logContainer.children.length > 50) {
+                    logContainer.removeChild(logContainer.firstChild);
+                }
+            }
+
+            // Clear log
+            document.getElementById('clearLogBtn').addEventListener('click', () => {
+                logContainer.innerHTML = '';
+                addLog('Log cleared', 'info');
+            });
+
+            // Update UI from state
+            function updateUI(state) {
+                // System status
+                const statusRing = systemStatusIndicator.querySelector('.status-ring');
+                statusRing.className = 'status-ring ' + state.systemStatus.toLowerCase();
+                systemStatusText.textContent = state.systemStatus;
+
+                // User message
+                userMessage.textContent = state.userMessage;
+
+                // Gesture
+                gestureValue.textContent = state.detectedGesture;
+                gestureValue.className = 'state-value gesture ' +
+                    (state.detectedGesture !== 'NONE' ? 'active' : '');
+
+                // Confidence
+                const confPercent = state.confidence === 'HIGH' ? 95 :
+                    state.confidence === 'MEDIUM' ? 60 : 20;
+                confidenceFill.style.width = confPercent + '%';
+                confidenceFill.className = 'confidence-fill ' + state.confidence.toLowerCase();
+                confidenceLabel.textContent = state.confidence;
+
+                // Safety
+                if (state.safetyApproved) {
+                    safetyValue.innerHTML = '<span class="safety-icon">✅</span><span>Approved</span>';
+                    safetyValue.classList.add('approved');
+                } else {
+                    safetyValue.innerHTML = '<span class="safety-icon">🔒</span><span>Not Approved</span>';
+                    safetyValue.classList.remove('approved');
+                }
+
+                // Action state
+                actionStateValue.textContent = state.actionState;
+                actionStateValue.className = 'state-value action ' + state.actionState.toLowerCase();
+
+                // Update pipeline stages
+                updatePipeline(state);
+
+                // Action feedback
+                if (state.actionState === 'EXECUTED') {
+                    feedbackContent.classList.remove('hidden');
+                    feedbackContent.querySelector('.feedback-text').textContent = state.userMessage;
+                    setTimeout(() => feedbackContent.classList.add('hidden'), 1500);
+                }
+
+                // Mute state
+                if (orchestrator.isMuted) {
+                    muteIndicator.classList.add('muted');
+                    muteIndicator.querySelector('.mute-icon').textContent = '🔇';
+                    muteIndicator.querySelector('.mute-label').textContent = 'MUTED';
+                } else {
+                    muteIndicator.classList.remove('muted');
+                    muteIndicator.querySelector('.mute-icon').textContent = '🔊';
+                    muteIndicator.querySelector('.mute-label').textContent = 'UNMUTED';
+                }
+            }
+
+            function updatePipeline(state) {
+                // Reset all stages
+                Object.values(stages).forEach(s => {
+                    s.classList.remove('active', 'error', 'approved');
+                });
+
+                if (state.systemStatus === 'ERROR') {
+                    Object.values(stages).forEach(s => s.classList.add('error'));
+                    return;
+                }
+
+                if (state.systemStatus === 'IDLE') {
+                    stages.vision.classList.add('active');
+                    return;
+                }
+
+                // Vision is always active when ACTIVE
+                stages.vision.classList.add('active');
+                stages.gesture.classList.add('active');
+
+                if (state.safetyApproved) {
+                    stages.safety.classList.add('active', 'approved');
+                    stages.action.classList.add('active');
+                }
+
+                stages.visual.classList.add('active');
+            }
+
+            // Listen for state changes
+            orchestrator.addEventListener((type, data) => {
+                if (type === 'stateChange') {
+                    updateUI(data);
+                    addLog(`State: ${data.systemStatus} | ${data.detectedGesture} | ${data.actionState}`,
+                        data.systemStatus === 'ERROR' ? 'error' : 'info');
+                } else if (type === 'cooldownStart') {
+                    addLog('Cooldown started', 'warning');
+                } else if (type === 'cooldownEnd') {
+                    addLog('Cooldown ended', 'success');
+                }
+            });
+
+            // Keyboard controls
+            window.addEventListener('keydown', (e) => {
+                const key = e.key.toLowerCase();
+                const keyMap = {
+                    '1': 1, '2': 2, '3': 3, '4': 4, '5': 5,
+                    '0': 0, 'e': 9, 'enter': 6, ' ': 6
+                };
+
+                if (keyMap.hasOwnProperty(key)) {
+                    orchestrator.setTestState(keyMap[key]);
+                    addLog(`Test state ${keyMap[key]} triggered`, 'info');
+                }
+            });
+
+            // Button controls
+            document.querySelectorAll('.control-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const state = parseInt(btn.dataset.state);
+                    orchestrator.setTestState(state);
+                    addLog(`Test state ${state} triggered via button`, 'info');
+                });
+            });
+
+            // Listen to orchestrator broadcast channel for cross-window updates
+            const orchestratorChannel = new BroadcastChannel('aura-orchestrator');
+            orchestratorChannel.onmessage = (event) => {
+                updateUI(event.data);
+            };
+
+            // Initial state
+            updateUI(orchestrator.getState());
+            addLog('AURA Orchestrator Agent ready', 'success');
+        });
     </script>
-    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>
