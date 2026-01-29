@@ -1,0 +1,249 @@
+/* ============================================
+   3D Particle Visualization Agent - Styles
+   Premium dark theme with glassmorphism
+   ============================================ */
+
+:root {
+    --bg-dark: #0a0a0f;
+    --bg-glass: rgba(15, 15, 25, 0.85);
+    --border-glow: rgba(100, 180, 255, 0.3);
+    --accent-primary: #00d4ff;
+    --accent-secondary: #7b2dff;
+    --accent-success: #00ff88;
+    --accent-warning: #ffaa00;
+    --accent-danger: #ff3366;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.6);
+    --text-dim: rgba(255, 255, 255, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg-dark);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow: hidden;
+    color: var(--text-primary);
+}
+
+#particleCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+/* ============================================
+   Status Overlay - Glassmorphism
+   ============================================ */
+
+.status-overlay {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 100;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glow);
+    border-radius: 16px;
+    padding: 20px 24px;
+    min-width: 280px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 60px rgba(0, 212, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.status-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    animation: pulse-glow 2s ease-in-out infinite;
+    box-shadow: 0 0 12px var(--accent-primary);
+}
+
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 12px var(--accent-primary);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(0.9);
+        box-shadow: 0 0 20px var(--accent-primary);
+    }
+}
+
+.status-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+}
+
+.status-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.status-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 80px;
+}
+
+.status-bar {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.status-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+    border-radius: 3px;
+    transition: width 0.3s ease-out;
+    box-shadow: 0 0 10px var(--accent-primary);
+}
+
+.status-value {
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'SF Mono', 'Monaco', monospace;
+    min-width: 50px;
+    text-align: right;
+}
+
+.status-value.gesture {
+    color: var(--accent-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.status-value.state {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: rgba(0, 212, 255, 0.15);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: var(--accent-primary);
+}
+
+.status-value.state.approved {
+    background: rgba(0, 255, 136, 0.15);
+    border-color: rgba(0, 255, 136, 0.3);
+    color: var(--accent-success);
+}
+
+.status-value.state.executed {
+    background: rgba(123, 45, 255, 0.15);
+    border-color: rgba(123, 45, 255, 0.3);
+    color: var(--accent-secondary);
+}
+
+.status-value.state.cooldown {
+    background: rgba(255, 170, 0, 0.15);
+    border-color: rgba(255, 170, 0, 0.3);
+    color: var(--accent-warning);
+}
+
+.controls-hint {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.controls-hint span {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: 'SF Mono', 'Monaco', monospace;
+}
+
+/* ============================================
+   FPS Counter
+   ============================================ */
+
+.fps-counter {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glow);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'SF Mono', 'Monaco', monospace;
+    color: var(--accent-success);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.fps-counter.warning {
+    color: var(--accent-warning);
+}
+
+.fps-counter.critical {
+    color: var(--accent-danger);
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+
+@media (max-width: 480px) {
+    .status-overlay {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        min-width: unset;
+        padding: 16px;
+    }
+
+    .controls-hint {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
