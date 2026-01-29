@@ -266,8 +266,12 @@ body {
 }
 
 .panel-content {
-    height: 350px;
+    height: 300px;
     position: relative;
+}
+
+.vision-panel .panel-content {
+    height: 480px;
 }
 
 .panel-content iframe {
