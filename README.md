@@ -58,8 +58,6 @@ The system operates on a coordinated pipeline of specialized agents:
 - **Visualization**: Three.js / WebGL
 - **Communication**: BroadcastChannel API
 
-## Virtual Health Assistant
-This repository also contains a `virtual-health-assistant` module, a React/Vite based application for health monitoring interfaces.
 
 ## License
 [MIT](LICENSE)
