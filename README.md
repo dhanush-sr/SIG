@@ -5,6 +5,7 @@ AURA (Advanced User Response Agent) is a sophisticated gesture recognition and c
 
 ## Key Features
 - **Vision Agent**: Real-time hand tracking and high-fidelity landmark extraction using MediaPipe.
+- **Touchless Cursor**: Implements a fluid "finger-pointer" cursor mechanism that maps physical hand movements to the 3D digital space.
 - **Orchestrator Agent**: Central nervous system managing state, safety checks, and component coordination.
 - **Particle Visualization**: Dynamic 3D particle system (Three.js) that visually represents the system's "truth" and intent.
 - **Safety & Validation**: Multi-layer safety checks including confidence thresholds, stability verification, and cooldown periods.
@@ -41,6 +42,7 @@ The system operates on a coordinated pipeline of specialized agents:
 3.  Open `http://localhost:8080/` in your browser.
 
 ### Using Gestures
+- **Finger Pointer**: Use your hand as a virtual cursor. The system tracks your finger direction and palm position to provide precise, touchless pointing control.
 - **Closed Fist (Hold)**: Toggle System Mute.
 - **Swipe Left/Right**: Navigation (simulated).
 
